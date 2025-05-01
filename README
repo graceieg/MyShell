@@ -1,49 +1,144 @@
-Grace Giebel, gag130
+# 🐚 Mysh: A Simple Command-Line Shell
 
-Overview
-Mysh is a simple command-line shell designed to let users execute commands interactively or through batch files. It supports built-in commands, running external programs, input/output redirection, wildcard expansion, and piping between commands. The project focuses on providing a straightforward and reliable shell experience, handling common cases while being robust against errors.
+**Author:** Grace Giebel
+**Course Project:** [Your Course Name or Semester Here]
 
-Design
-Input Handling
-Users can either type commands directly in interactive mode or supply a batch file with commands. The shell tokenizes these commands and decides whether to execute them as built-in commands or external programs.
+Mysh is a custom Unix-like shell built in C. It allows users to run commands interactively or via batch mode, supporting features like piping, redirection, wildcard expansion, and several built-in commands. It is designed to be robust, error-tolerant, and straightforward for the user.
 
-Built-in Commands
-The shell has a few built-in commands:
+---
 
-cd: Changes the current directory. If the path is invalid, it shows an error.
-pwd: Prints the current working directory.
-exit: Ends the shell, optionally displaying an exit message.
-which: Searches for a program in system directories like /usr/bin and shows the full path if found.
-Running Commands
-For commands that aren’t built-in, the shell forks a new process and runs the program using execvp().
+## 📂 Features
 
-Error Handling
-Errors such as invalid commands, bad redirection syntax, or missing files are handled gracefully. The shell cleans up resources and provides clear error messages.
+- Interactive and Batch Mode
+- Built-in Commands: `cd`, `pwd`, `exit`, `which`
+- External Command Execution
+- Input/Output Redirection: `>`, `<`, `>>`
+- Wildcard Expansion: e.g., `*.txt`
+- Piping: e.g., `ls | grep mysh | wc -l`
+- Graceful Error Handling
 
-Special Cases
-The shell was designed to handle several tricky scenarios. Invalid or mistyped commands are caught and reported without crashing the program. Missing files or bad syntax in redirection or piping are also handled with proper error messages. If a wildcard doesn’t match any files, the command still works with the original input.
+---
 
-Redirection
-Redirection allows you to read input from a file or write output to a file using the < and > symbols. For example, mysh > output.txt saves the output to output.txt, and mysh < input.txt reads from input.txt. You can also combine input and output redirection, like mysh < input.txt > output.txt, to handle both at once.
+## ⚙️ How to Build
 
-Wildcard Expansion
-Wildcard expansion works with patterns like *.txt to match files in the current directory. If no files match the pattern, the wildcard remains as-is, so the command doesn't fail. This makes working with wildcards predictable and flexible.
+Run the following command in the project directory:
 
-Piping
-Piping allows the output of one command to be used as input for another. For example, ls | wc -l lists the files in a directory and counts the lines. If something goes wrong in the pipe, the shell will show an error, but it won’t crash.
+```
+make
+```
 
-Error Handling
-The shell catches errors like invalid commands, bad redirection syntax, and missing files. If there’s an issue, it provides a clear error message without crashing. For example, if a file is missing during redirection, the shell will show an error like No such file or directory and keep running.
+To clean up build files:
 
-Special Cases
-The shell handles tricky situations to make sure it doesn’t crash. It catches mistyped commands and reports errors without stopping. It also handles cases like missing files, bad syntax, or incorrect piping. If a wildcard doesn’t match any files, the command will continue with the original input, so it doesn’t cause any unexpected behavior.
+```
+make clean
+```
 
-Testing
-Testing focused on making sure the shell works in both interactive and batch modes. Simple commands like ls and pwd, along with combinations using redirection and wildcards, were tested. Batch mode tests checked if the shell could handle sequences of commands, including pipes and redirection. Built-in commands like cd, pwd, and exit were tested with both valid and invalid inputs. Wildcards were checked with patterns like *.txt, and pipeline commands like cat file.txt | grep "text" | sort were tested. Redirection was checked with commands like wc -l < input.txt > output.txt. The shell was also tested for errors like missing files and bad syntax, with clear error messages ensuring it kept working without crashing.
+---
 
+## 🚀 Usage
 
+### Interactive Mode
 
+```
+./mysh
+```
 
+You can then enter commands like:
+
+```
+ls -l
+cd src
+pwd
+```
+
+### Batch Mode
+
+You can also provide a file with commands:
+
+```
+./mysh batchfile.txt
+```
+
+---
+
+## 🔍 Design Overview
+
+### Input Handling
+- In interactive mode, commands are read from standard input.
+- In batch mode, commands are read from a file line by line.
+
+### Built-in Commands
+
+- `cd`: Changes the current directory.
+- `pwd`: Prints current directory.
+- `exit`: Exits the shell.
+- `which`: Locates the full path of a given command.
+
+### External Commands
+If a command isn't built-in, `mysh` uses `fork()` and `execvp()` to run it in a new process.
+
+### Redirection
+
+- `>` redirects standard output
+- `<` redirects standard input
+- Can combine both: `./mysh < input.txt > output.txt`
+
+### Wildcard Expansion
+
+Supports simple globbing like `*.txt`. If no match is found, the literal string is passed to the command.
+
+### Piping
+
+Commands can be chained using the `|` symbol. For example:
+
+```
+cat input.txt | grep "search" | sort
+```
+
+### Error Handling
+
+All errors like:
+
+- Invalid commands
+- Bad redirection syntax
+- Missing files  
+
+Are caught and handled gracefully with user-friendly error messages.
+
+---
+
+## 🧪 Testing
+
+Tested cases include:
+
+- Built-in command functionality (`cd`, `pwd`, `which`, `exit`)
+- Piping: `ls | wc -l`, etc.
+- Wildcards: `*.c`, `*.txt`
+- Redirection: `cat < input.txt > output.txt`
+- Batch mode using scripts
+- Invalid inputs, typos, and edge cases
+
+All scenarios were verified to avoid shell crashes and ensure consistent behavior.
+
+---
+
+## 📁 Repository Structure
+
+```
+├── Makefile
+├── mysh.c
+├── mysh         # compiled executable
+├── myscript.sh  # optional batch test script
+├── output.txt   # redirected output
+├── testfile.txt # test input file (optional)
+└── README.md
+```
+
+---
+
+## 📜 License & Attribution
+
+This project was developed as part of coursework and is intended for educational purposes only.
 
 
 
