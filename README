@@ -1,0 +1,53 @@
+Grace Giebel, gag130
+
+Overview
+Mysh is a simple command-line shell designed to let users execute commands interactively or through batch files. It supports built-in commands, running external programs, input/output redirection, wildcard expansion, and piping between commands. The project focuses on providing a straightforward and reliable shell experience, handling common cases while being robust against errors.
+
+Design
+Input Handling
+Users can either type commands directly in interactive mode or supply a batch file with commands. The shell tokenizes these commands and decides whether to execute them as built-in commands or external programs.
+
+Built-in Commands
+The shell has a few built-in commands:
+
+cd: Changes the current directory. If the path is invalid, it shows an error.
+pwd: Prints the current working directory.
+exit: Ends the shell, optionally displaying an exit message.
+which: Searches for a program in system directories like /usr/bin and shows the full path if found.
+Running Commands
+For commands that aren’t built-in, the shell forks a new process and runs the program using execvp().
+
+Error Handling
+Errors such as invalid commands, bad redirection syntax, or missing files are handled gracefully. The shell cleans up resources and provides clear error messages.
+
+Special Cases
+The shell was designed to handle several tricky scenarios. Invalid or mistyped commands are caught and reported without crashing the program. Missing files or bad syntax in redirection or piping are also handled with proper error messages. If a wildcard doesn’t match any files, the command still works with the original input.
+
+Redirection
+Redirection allows you to read input from a file or write output to a file using the < and > symbols. For example, mysh > output.txt saves the output to output.txt, and mysh < input.txt reads from input.txt. You can also combine input and output redirection, like mysh < input.txt > output.txt, to handle both at once.
+
+Wildcard Expansion
+Wildcard expansion works with patterns like *.txt to match files in the current directory. If no files match the pattern, the wildcard remains as-is, so the command doesn't fail. This makes working with wildcards predictable and flexible.
+
+Piping
+Piping allows the output of one command to be used as input for another. For example, ls | wc -l lists the files in a directory and counts the lines. If something goes wrong in the pipe, the shell will show an error, but it won’t crash.
+
+Error Handling
+The shell catches errors like invalid commands, bad redirection syntax, and missing files. If there’s an issue, it provides a clear error message without crashing. For example, if a file is missing during redirection, the shell will show an error like No such file or directory and keep running.
+
+Special Cases
+The shell handles tricky situations to make sure it doesn’t crash. It catches mistyped commands and reports errors without stopping. It also handles cases like missing files, bad syntax, or incorrect piping. If a wildcard doesn’t match any files, the command will continue with the original input, so it doesn’t cause any unexpected behavior.
+
+Testing
+Testing focused on making sure the shell works in both interactive and batch modes. Simple commands like ls and pwd, along with combinations using redirection and wildcards, were tested. Batch mode tests checked if the shell could handle sequences of commands, including pipes and redirection. Built-in commands like cd, pwd, and exit were tested with both valid and invalid inputs. Wildcards were checked with patterns like *.txt, and pipeline commands like cat file.txt | grep "text" | sort were tested. Redirection was checked with commands like wc -l < input.txt > output.txt. The shell was also tested for errors like missing files and bad syntax, with clear error messages ensuring it kept working without crashing.
+
+
+
+
+
+
+
+
+
+
+
