@@ -1,7 +1,7 @@
 # 🐚 Mysh: A Simple Command-Line Shell
 
 **Author:** Grace Giebel
-**Course Project:** [Your Course Name or Semester Here]
+
 
 Mysh is a custom Unix-like shell built in C. It allows users to run commands interactively or via batch mode, supporting features like piping, redirection, wildcard expansion, and several built-in commands. It is designed to be robust, error-tolerant, and straightforward for the user.
 
